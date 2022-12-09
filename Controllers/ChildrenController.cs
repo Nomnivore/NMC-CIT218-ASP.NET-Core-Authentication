@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Authentication.Controllers
 {
+    [Authorize]
     public class ChildrenController : Controller
     {
         private readonly MembersContext _context;

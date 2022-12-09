@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Authentication.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Authentication.Controllers
 {
+    [Authorize]
     public class MembersController : Controller
     {
         private readonly MembersContext _context;
@@ -19,6 +21,7 @@ namespace Authentication.Controllers
         }
 
         // GET: Members
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Parent.ToListAsync());
