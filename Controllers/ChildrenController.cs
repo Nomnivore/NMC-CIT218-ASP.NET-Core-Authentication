@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Authentication.Controllers
 {
-    [Authorize]
     public class ChildrenController : Controller
     {
         private readonly MembersContext _context;
@@ -21,12 +20,14 @@ namespace Authentication.Controllers
         }
 
         // GET: Children
+        [Authorize(Roles = "Administrator,Manager,User")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Child.ToListAsync());
         }
 
         // GET: Children/Details/5
+        [Authorize(Roles = "Administrator,Manager,User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +46,7 @@ namespace Authentication.Controllers
         }
 
         // GET: Children/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +57,7 @@ namespace Authentication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Birthday")] Child child)
         {
             if (ModelState.IsValid)
@@ -67,6 +70,7 @@ namespace Authentication.Controllers
         }
 
         // GET: Children/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,6 +91,7 @@ namespace Authentication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Birthday")] Child child)
         {
             if (id != child.ID)
@@ -118,6 +123,7 @@ namespace Authentication.Controllers
         }
 
         // GET: Children/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,6 +144,7 @@ namespace Authentication.Controllers
         // POST: Children/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var child = await _context.Child.FindAsync(id);

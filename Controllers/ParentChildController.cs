@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Authentication.Controllers
 {
-    [Authorize]
     public class ParentChildController : Controller
     {
         private readonly MembersContext _context;
@@ -21,6 +20,7 @@ namespace Authentication.Controllers
         }
 
         // GET: ParentChild
+        [Authorize(Roles = "Administrator,Manager,User")]
         public async Task<IActionResult> Index()
         {
             var membersContext = _context.Family.Include(p => p.Child).Include(p => p.Members);
@@ -28,6 +28,7 @@ namespace Authentication.Controllers
         }
 
         // GET: ParentChild/Details/5
+        [Authorize(Roles = "Administrator,Manager,User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +49,7 @@ namespace Authentication.Controllers
         }
 
         // GET: ParentChild/Create
+        [Authorize(Roles = "Administrator,Manager")]
         public IActionResult Create()
         {
             ViewData["ChildID"] = new SelectList(_context.Child, "ID", "FirstName");
@@ -60,6 +62,7 @@ namespace Authentication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Create([Bind("ID,MembersID,ChildID")] ParentChild parentChild)
         {
             if (ModelState.IsValid)
@@ -74,6 +77,7 @@ namespace Authentication.Controllers
         }
 
         // GET: ParentChild/Edit/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +100,7 @@ namespace Authentication.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,MembersID,ChildID")] ParentChild parentChild)
         {
             if (id != parentChild.ID)
@@ -129,6 +134,7 @@ namespace Authentication.Controllers
         }
 
         // GET: ParentChild/Delete/5
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,6 +157,7 @@ namespace Authentication.Controllers
         // POST: ParentChild/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator,Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var parentChild = await _context.Family.FindAsync(id);
